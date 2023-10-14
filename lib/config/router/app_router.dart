@@ -26,6 +26,10 @@ final appRouter = GoRouter(
         GoRoute(
           path: '/favorites',
           builder: (context, state) => const FavoritesView(),
+        ),
+        GoRoute(
+          path: '/watchlist',
+          builder: (context, state) => const WatchlistView(),
         )
       ],
     ),

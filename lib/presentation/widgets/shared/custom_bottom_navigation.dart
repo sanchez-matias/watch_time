@@ -10,7 +10,7 @@ class CustomBottomNavigation extends StatelessWidget {
     switch (location) {
       case '/':
         return 0;
-      case '/categories':
+      case '/watchlist':
         return 1;
       case '/favorites':
         return 2;
@@ -25,7 +25,7 @@ class CustomBottomNavigation extends StatelessWidget {
         context.go('/');
         break;
       case 1:
-        context.go('/');
+        context.go('/watchlist');
         break;
       case 2:
         context.go('/favorites');
@@ -35,14 +35,15 @@ class CustomBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      elevation: 0,
-      currentIndex: getCurrentIndex(context),
-      onTap: (value) => onItemTapped(context, value),
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.label), label: 'Categories'),
-        BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
+    return NavigationBar(
+      elevation: 0.8,
+      selectedIndex: getCurrentIndex(context),
+      onDestinationSelected: (value) => onItemTapped(context, value),
+      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+      destinations: const [
+        NavigationDestination(icon: Icon(Icons.home_filled), label: 'Home'),
+        NavigationDestination(icon: Icon(Icons.list), label: 'Watchlist'),
+        NavigationDestination(icon: Icon(Icons.favorite), label: 'Favorites'),
       ],
     );
   }
