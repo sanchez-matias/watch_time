@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:watch_time/config/helpers/human_formats.dart';
 import 'package:watch_time/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
 
@@ -59,7 +60,6 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
     );
   }
 
-  // TODO: implement _ResultsItem() widget.
   @override
   Widget buildResults(BuildContext context) {
     return StreamBuilder(
@@ -68,9 +68,13 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
       builder: (context, snapshot) {
         final movies = snapshot.data ?? [];
 
-        return ListView.builder(
+        return ListView.separated(
+          separatorBuilder: (context, index) => const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: Divider(),
+          ),
           itemCount: movies.length,
-          itemBuilder: (context, index) => _SuggestionsItem(
+          itemBuilder: (context, index) => _ResultsItem(
             movie: movies[index],
             onMovieSelected: (context, movie) {
               clearStreams();
@@ -130,11 +134,16 @@ class _SuggestionsItem extends StatelessWidget {
           children: [
             // Image
             SizedBox(
-              width: size.width * 0.2,
+              width: size.width * 0.15,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.network(movie.posterPath),
-              ),
+                  borderRadius: BorderRadius.circular(10),
+                  child: FadeInImage(
+                    height: 100,
+                    fit: BoxFit.cover,
+                    image: NetworkImage(movie.posterPath),
+                    placeholder:
+                        const AssetImage('assets/loaders/bottle-loader.gif'),
+                  )),
             ),
 
             const SizedBox(width: 10),
@@ -145,7 +154,12 @@ class _SuggestionsItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(movie.title, style: textStyles.titleMedium),
+                  Text(
+                    movie.title,
+                    style: textStyles.titleMedium,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   movie.overview.length > 100
                       ? Text('${movie.overview.substring(0, 100)}...')
                       : Text(movie.overview),
@@ -170,6 +184,76 @@ class _ResultsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Card();
+    final textStyles = Theme.of(context).textTheme;
+    final size = MediaQuery.of(context).size;
+
+    return GestureDetector(
+      onTap: () => onMovieSelected(context, movie),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          children: [
+            // Image
+            SizedBox(
+              width: size.width * 0.25,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: FadeInImage(
+                    height: 150,
+                    fit: BoxFit.cover,
+                    image: NetworkImage(movie.posterPath),
+                    placeholder:
+                        const AssetImage('assets/loaders/bottle-loader.gif'),
+                  )),
+            ),
+
+            const SizedBox(width: 10),
+
+            // Movie Info
+            SizedBox(
+              width: size.width * 0.65,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // title
+                  Text(
+                    movie.title,
+                    style: textStyles.titleLarge,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+
+                  // overview
+                  movie.overview.length > 150
+                      ? Text('${movie.overview.substring(0, 150)}...')
+                      : Text(movie.overview),
+
+                  const SizedBox(height: 5),
+
+                  // raitig and votes
+                  Row(
+                    children: [
+                      Icon(Icons.star_half_rounded,
+                          color: Colors.yellow.shade800),
+                      const SizedBox(width: 5),
+                      Text(
+                        HumanFormats.number(movie.voteAverage, 1),
+                        style: textStyles.bodyMedium!
+                            .copyWith(color: Colors.yellow.shade900),
+                      ),
+                      const SizedBox(width: 20),
+                      Text(
+                        HumanFormats.number(movie.popularity),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

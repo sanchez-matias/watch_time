@@ -17,7 +17,7 @@ class MovieMapper {
         popularity: movieDb.popularity,
         posterPath: (movieDb.posterPath != '')
             ? 'https://image.tmdb.org/t/p/w500${movieDb.posterPath}'
-            : 'http://www.filmfodder.com/reviews/images/poster-not-available.jpg',
+            : 'https://www.gpo.gov/images/default-source/leadership-1/row-2/davis.jpg',
         releaseDate:
             movieDb.releaseDate != null ? movieDb.releaseDate! : DateTime.now(),
         title: movieDb.title,
