@@ -50,18 +50,20 @@ class HomeViewState extends ConsumerState<HomeView> {
                 // Top slide section
                 MoviesSlideshow(movies: sliderShowMovies),
 
+                const SizedBox(height: 20),
+
                 // Categories section.
                 MoviesHorizontalListview(
                   movies: popularMovies,
                   title: 'Popular',
-                  subtitle: 'All',
+                  //subtitle: 'All',
                   loadNextPage: () =>
                       ref.read(popularMoviesProvider.notifier).loadNextPage(),
                 ),
                 MoviesHorizontalListview(
                   movies: nowPlayingMovies,
                   title: 'Now Playing',
-                  subtitle: 'All',
+                  //subtitle: 'All',
                   loadNextPage: () => ref
                       .read(nowPlayingMoviesProvider.notifier)
                       .loadNextPage(),
@@ -69,14 +71,14 @@ class HomeViewState extends ConsumerState<HomeView> {
                 MoviesHorizontalListview(
                   movies: upcomingMovies,
                   title: 'Upcoming',
-                  subtitle: 'All',
+                  //subtitle: 'All',
                   loadNextPage: () =>
                       ref.read(upcomingMoviesProvider.notifier).loadNextPage(),
                 ),
                 MoviesHorizontalListview(
                   movies: topRatedMovies,
                   title: 'Top Rated',
-                  subtitle: 'All',
+                  //subtitle: 'All',
                   loadNextPage: () =>
                       ref.read(topRatedMoviesProvider.notifier).loadNextPage(),
                 ),
