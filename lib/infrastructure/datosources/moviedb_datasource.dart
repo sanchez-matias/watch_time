@@ -5,8 +5,6 @@ import 'package:watch_time/domain/entities/video.dart';
 import 'package:watch_time/infrastructure/mappers/movie_mapper.dart';
 import 'package:watch_time/infrastructure/mappers/video_mapper.dart';
 import 'package:watch_time/infrastructure/models/models.dart';
-import 'package:watch_time/infrastructure/models/moviedb/movie_details.dart';
-import 'package:watch_time/infrastructure/models/moviedb/moviedb_response.dart';
 import 'package:dio/dio.dart';
 
 class MovieDbDatasource extends MoviesDataSource {
@@ -98,5 +96,11 @@ class MovieDbDatasource extends MoviesDataSource {
     }
 
     return videos;
+  }
+  
+  @override
+  Future<List<Movie>> getSimilarMovies(int movieId) async {
+    final response = await dio.get('/movie/$movieId/similar');
+    return _jsonToMovies(response.data);
   }
 }
