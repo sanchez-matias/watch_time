@@ -2,6 +2,7 @@ import 'package:watch_time/presentation/providers/movies/movie_info_provider.dar
 import 'package:watch_time/presentation/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:watch_time/presentation/widgets/widgets.dart';
 
 import '../../../domain/entities/movie.dart';
 
@@ -110,6 +111,9 @@ class _MovieDetails extends StatelessWidget {
         ),
 
         _ActorsByMovie(movieId: movie.id.toString()),
+
+        VideosFromMovie(movieId: movie.id),
+
         const SizedBox(height: 100)
       ],
     );

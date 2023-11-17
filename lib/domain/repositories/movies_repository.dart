@@ -1,4 +1,4 @@
-import 'package:watch_time/domain/entities/movie.dart';
+import 'package:watch_time/domain/entities/entities.dart';
 
 abstract class MoviesRepository {
   Future<List<Movie>> getNowPlaying({int page = 1});
@@ -12,4 +12,6 @@ abstract class MoviesRepository {
   Future<Movie> getMoviesById(String id);
 
   Future<List<Movie>> searchMovies(String query);
+
+  Future<List<Video>> getYoutubeVideosById( int movieId );
 }

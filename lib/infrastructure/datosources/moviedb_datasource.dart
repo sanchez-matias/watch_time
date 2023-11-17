@@ -1,7 +1,10 @@
 import 'package:watch_time/config/constants/environment.dart';
 import 'package:watch_time/domain/datasources/movies_datasource.dart';
 import 'package:watch_time/domain/entities/movie.dart';
+import 'package:watch_time/domain/entities/video.dart';
 import 'package:watch_time/infrastructure/mappers/movie_mapper.dart';
+import 'package:watch_time/infrastructure/mappers/video_mapper.dart';
+import 'package:watch_time/infrastructure/models/models.dart';
 import 'package:watch_time/infrastructure/models/moviedb/movie_details.dart';
 import 'package:watch_time/infrastructure/models/moviedb/moviedb_response.dart';
 import 'package:dio/dio.dart';
@@ -79,5 +82,21 @@ class MovieDbDatasource extends MoviesDataSource {
       'query': query,
     });
     return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Video>> getYoutubeVideosById(int movieId) async {
+    final response = await dio.get('/movie/$movieId/videos');
+    final moviedbVideosReponse = MoviedbVideosResponse.fromJson(response.data);
+    final videos = <Video>[];
+
+    for (final moviedbVideo in moviedbVideosReponse.results) {
+      if (moviedbVideo.site == 'YouTube') {
+        final video = VideoMapper.moviedbVideoToEntity(moviedbVideo);
+        videos.add(video);
+      }
+    }
+
+    return videos;
   }
 }
